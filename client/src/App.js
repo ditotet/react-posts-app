@@ -8,7 +8,7 @@ export default class App extends React.Component {
   }
 
   handleDelete = (id) => {
-    axios.delete(`/${id}`)
+    axios.delete(`/api/posts/${id}`)
   }
 
   render(){
@@ -23,7 +23,7 @@ export default class App extends React.Component {
             Title: { post.title }
             <br/> 
             Body: { post.body }
-            <button onClick={ this.handleDelete.bind(this, post.id) }>Delete this post</button>
+            <button onClick={ () => this.handleDelete (post._id) }>Delete this post</button>
           </div>
         ))}
       </div>
