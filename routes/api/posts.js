@@ -12,7 +12,7 @@ router.post('/', (req, res) => {
   const newPost = new Post({
     author: req.body.author,
     title: req.body.title,
-    body: req.body.description
+    body: req.body.body
   })
 
   newPost.save()
