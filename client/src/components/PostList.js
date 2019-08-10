@@ -1,6 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardContent from '@material-ui/core/CardContent'
+import Button from '@material-ui/core/Button'
+import CardActions from '@material-ui/core/CardActions'
+import Typography from '@material-ui/core/Typography'
+
+
 
 export default class PostList extends React.Component {
   state = {
@@ -17,15 +25,29 @@ export default class PostList extends React.Component {
     return (
       <div>
         { this.state.posts.map(post => ( 
-          <div>
-            Author: { post.author }
-            <br/>
-            Title: { post.title }
-            <br/> 
-            Body: { post.body }
-            <button onClick={ () => this.handleDelete (post._id) }>Delete this post</button>
-          </div>
-        )) }
+          <>
+          <Card maxWidth={300} m={3} fullWidth>
+            <CardActionArea>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  { post.title }
+                </Typography>
+                <Typography  color="textSecondary">
+                  By { post.author }
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  { post.body }
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              <Button size="small" color="primary">
+                Learn More
+              </Button>
+            </CardActions>
+          </Card>
+          </>
+        ))}
         <Link to="/add">
           Add Post
         </Link>
