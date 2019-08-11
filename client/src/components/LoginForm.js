@@ -16,7 +16,10 @@ export default class LoginForm extends Component {
 
   handleChange = (e, fieldName) => {
     this.setState({
-      [fieldName]: e.target.value
+      [fieldName]: e.target.value,
+      errorText: {
+        [fieldName]: "blaaa"
+      }
     })
     console.log(this.state)
   }
@@ -37,6 +40,7 @@ export default class LoginForm extends Component {
     return (
       <form noValidate onSubmit={ this.handleSubmit }>
         <TextField
+          required
           id="user-name"
           label="User Name"
           value={this.state.userName}
@@ -46,6 +50,7 @@ export default class LoginForm extends Component {
           style={ styles.inputField }
         />
         <TextField
+          required
           id="password"
           label="Password"
           type="password"

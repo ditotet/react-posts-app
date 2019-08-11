@@ -20,20 +20,32 @@ export default class RegisterForm extends Component {
   state = {
     userName: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    errorText: {
+      userName: "",
+      password: "",
+      confirmPassword: "",
+    }
   }
 
-  handleChange = (e, fieldName) => {
+  handleChange = (e, fieldName) => {  
     this.setState({
       [fieldName]: e.target.value
+    }, () => {
+      let errorText = this.state.errorText
+      if(this.state.password === this.state.confirmPassword) {
+        errorText.confirmPassword = ""
+      }
+      if(this.state.password.length >= 8) {
+        errorText.password = ""
+      }
+      this.setState({
+        erroText: errorText
+      })
     })
-    console.log(this.state)
   }
 
   handleSubmit = () => {
-    if(this.state.password !== this.state.confirmPassword) {
-        return
-    }
     axios.post('/register', {
       userName: this.state.userName,
       password: this.state.password
@@ -43,12 +55,38 @@ export default class RegisterForm extends Component {
       console.log(err)
     })
   }
+
+  validatePassword = () => {
+    let errorText = this.state.errorText
+    if(this.state.password.length < 8) {
+      errorText.password = "Password must be 8 letters at least"
+    } else {
+      errorText.password = ""
+    }
+    if(this.state.password.length > 0 && this.state.confirmPassword.length > 0 && this.state.password !== this.state.confirmPassword) {
+      errorText.confirmPassword = "Passwords must match"
+    }
+    this.setState({
+      erroText: errorText
+    })
+  }
+
+  validateConfirmPassword = () => {
+    let errorText = this.errorText 
+    if(this.state.password !== this.state.confirmPassword) {
+      errorText.confirmPassword = "Passwords must match"
+    }
+    this.setState({
+      erroText: errorText
+    })
+  }
   
   render() {
     const { styles } = this.props
     return (
       <form noValidate onSubmit={ this.handleSubmit }>
         <TextField
+          required
           id="user-name"
           label="User Name"
           value={this.state.userName}
@@ -56,8 +94,11 @@ export default class RegisterForm extends Component {
           margin="normal"
           variant="outlined"
           style={ styles.inputField }
+          helperText={ this.state.errorText.userName }
+          error={ this.state.errorText.userName.length > 0 }
         />
         <TextField
+          required
           id="password"
           label="Password"
           type="password"
@@ -66,8 +107,12 @@ export default class RegisterForm extends Component {
           margin="normal"
           variant="outlined"
           style={ styles.inputField }
+          onBlur={ this.validatePassword }
+          helperText={ this.state.errorText.password }
+          error={ this.state.errorText.password.length > 0 }
         />
         <TextField
+          required
           id="confirm-password"
           label="Confirm password"
           type="password"
@@ -76,6 +121,9 @@ export default class RegisterForm extends Component {
           margin="normal"
           variant="outlined"
           style={ styles.inputField }
+          onBlur={ this.validateConfirmPassword }
+          helperText={ this.state.errorText.confirmPassword }
+          error={ this.state.errorText.confirmPassword.length > 0 }
         />
         <Button style={ styles.button } 
                 fullWidth 
