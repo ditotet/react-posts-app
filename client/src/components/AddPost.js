@@ -1,6 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios';
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Container from '@material-ui/core/Container'
+import Typography from '@material-ui/core/Typography'
+
+
+
+
 
 export default class AddPost extends React.Component {
   state = {
@@ -45,21 +55,52 @@ export default class AddPost extends React.Component {
 
   render() {
     return (
-      <div>
-        <label>Author: </label>
-        <input name="author" type="text" onChange={ this.handleAuthorChange } />
-        <br/>
-        <label>Title: </label>
-        <input name="title" type="text" onChange={ this.handleTitleChange }/>
-        <br/>
-        <label>Body: </label>
-        <input name="body" type="text" onChange={ this.handleBodyChange }/>
-        <br/>
-        <button onClick={ this.handleSubmit }>Add</button>
-        <Link to="/">
+      <>
+      <AppBar position="static">
+        <Container maxWidth="md">
+          <Toolbar>
+            Welcome to Posts App
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <Container maxWidth="md">
+      <Typography variant="h4" component="h2">
+        Add Post
+      </Typography>
+      <form noValidate onSubmit={ this.handleSubmit }>
+        <TextField
+          label="Body"
+          placeholder="Body"
+          multiline={true}
+          margin="normal"
+          variant="outlined"
+          style={{
+            width: "100%",
+            margin: '20px auto'
+          }}
+        />
+        <TextField
+          label="Body"
+          placeholder="Enter body of your post"
+          multiline={true}
+          rows={20}
+          rowsMax={100}
+          margin="normal"
+          variant="outlined"
+          style={{
+            width: "100%",
+            margin: '20px auto'
+          }}
+        />
+        <Button type="submit" variant="contained" color="primary" href="/posts">
+          Add Post
+        </Button>
+        <Button href="/">
           Back
-        </Link>
-      </div>
+        </Button>
+      </form>
+      </Container>
+      </>
     )
   }
 }

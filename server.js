@@ -32,15 +32,31 @@ app.post('/login', (req, res) => {
   })
 })
 
-app.post('/register', (req, res) => {
-  const newUser = new User({
-    userName: req.body.userName,
-    password: req.body.password,
-  })
+app.get('/api/userName', (req, res) => {
+  res.json({userName: req.session.userName})
+})
 
-  newUser.save()
-    .then(user => res.json(newUser))
-    .catch(err => res.json({ success: false }))
+app.post('/register', (req, res) => {
+  console.log(req.body)
+
+  User.findOne({userName: req.body.userName})
+    .then(user => {
+      if (user) {
+        res.json({
+          success: false,
+          error: `User '${req.body.userName}' already exists`
+        })
+      } else {
+        const newUser = new User({
+          userName: req.body.userName,
+          password: req.body.password,
+        })
+      
+        newUser.save()
+          .then(usr => res.json({...newUser, success: true}))
+          .catch(err => res.json({ success: false }))
+      }
+    })
 })
 
 const port = process.env.PORT || 5000;

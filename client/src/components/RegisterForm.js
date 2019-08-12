@@ -45,12 +45,26 @@ export default class RegisterForm extends Component {
     })
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     axios.post('/register', {
       userName: this.state.userName,
       password: this.state.password
     }).then(res => {
-      this.props.history.push('/posts')
+      if(res.data.success) {
+        axios.post('/login', {
+          userName: this.state.userName,
+          password: this.state.password
+        }).then(res => {
+          if (res.data.success) {
+            this.props.history.push('/posts')
+          } else {
+            console.log('unknown error')
+          }
+        })
+      } else {
+        console.log(res.data.error)
+      }
     }).catch(err => {
       console.log(err)
     })
@@ -72,7 +86,7 @@ export default class RegisterForm extends Component {
   }
 
   validateConfirmPassword = () => {
-    let errorText = this.errorText 
+    let errorText = this.state.errorText 
     if(this.state.password !== this.state.confirmPassword) {
       errorText.confirmPassword = "Passwords must match"
     }

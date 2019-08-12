@@ -56,8 +56,8 @@ export default class LoginForm extends Component {
           type="password"
           value={ this.state.password }
           onChange={ (e) => this.handleChange(e, 'password') }
-          margin="normal"
-          variant="outlined"
+            margin="normal"
+            variant="outlined"
           style={ styles.inputField }
         />
         <Button style={ styles.button } 

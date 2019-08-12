@@ -74,7 +74,7 @@ export default class Authentication extends Component {
             <Tab label="Login" />
             <Tab label="Register" />
           </Tabs>
-          { this.state.page == 0 ? <LoginPage styles={ this.styles } /> : <RegisterPage styles={ this.styles } /> }
+          { this.state.page == 0 ? <LoginPage styles={ this.styles } { ...this.props } /> : <RegisterPage styles={ this.styles } { ...this.props } /> }
         </Card>
       </div>
     )
