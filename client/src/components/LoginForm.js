@@ -11,25 +11,44 @@ export default class LoginForm extends Component {
   
   state = {
     userName: "",
-    password: ""
+    password: "",
+    errorText: {
+      userName: "",
+      password: ""
+    }
   }
 
   handleChange = (e, fieldName) => {
     this.setState({
       [fieldName]: e.target.value,
       errorText: {
-        [fieldName]: "blaaa"
+        userName: "",
+        password: ""
       }
     })
     console.log(this.state)
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
+    console.log("fuck")
     axios.post('/login', {
       userName: this.state.userName,
       password: this.state.password
     }).then(res => {
-      this.props.history.push('/posts')
+      if (res.data.success) {
+        this.props.history.push('/posts')
+      } else  {
+        let errorText = this.state.errorText
+        if (res.data.errorCode == 0) {
+          errorText.password = `Password for username '${this.state.userName}' is incorrect`
+        } else if (res.data.errorCode == 1) {
+          errorText.userName = `User '${this.state.userName}' does not exist`  
+        }
+        this.setState({
+          errorText: errorText
+        })
+      }
     }).catch(err => {
       console.log(err)
     })
@@ -38,7 +57,7 @@ export default class LoginForm extends Component {
   render() {
     const { styles } = this.props
     return (
-      <form noValidate onSubmit={ this.handleSubmit }>
+      <form noValidate onSubmit={e => this.handleSubmit(e) }>
         <TextField
           required
           id="user-name"
@@ -48,6 +67,8 @@ export default class LoginForm extends Component {
           margin="normal"
           variant="outlined"
           style={ styles.inputField }
+          helperText={ this.state.errorText.userName }
+          error= { this.state.errorText.userName.length > 0 }
         />
         <TextField
           required
@@ -59,6 +80,8 @@ export default class LoginForm extends Component {
             margin="normal"
             variant="outlined"
           style={ styles.inputField }
+          helperText={ this.state.errorText.password }
+          error= { this.state.errorText.password.length > 0 }
         />
         <Button style={ styles.button } 
                 fullWidth 

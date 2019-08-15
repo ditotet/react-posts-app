@@ -25,11 +25,27 @@ mongoose.connect(db)
 app.use('/api/posts', posts)
 
 app.post('/login', (req, res) => {
-  req.session.userName = req.body.userName
-  console.log("yoo")
-  res.send({
-    success: true,
-  })
+  User.findOne({userName: req.body.userName})
+    .then(user => {
+      if(user) {
+        if (user.password == req.body.password) {
+          req.session.userName = req.body.userName
+          res.send({
+            success: true,
+          })
+        } else {
+          res.send({
+            success: false,
+            errorCode: 0,
+          })
+        }
+      } else {
+        res.send({
+          success: false,
+          errorCode: 1,
+        })
+      }
+    })
 })
 
 app.get('/api/userName', (req, res) => {
