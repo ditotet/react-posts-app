@@ -13,16 +13,15 @@ import Typography from '@material-ui/core/Typography'
 
 
 export default class AddPost extends React.Component {
-  state = {
-    author: "",
-    title: "",
-    body: ""
+  styles = {
+    container: {
+      padding: 30
+    },
   }
 
-  handleAuthorChange = (e) => {
-    this.setState({
-      author: e.target.value
-    })
+  state = {
+    title: "",
+    body: ""
   }
 
   handleTitleChange = (e) => {
@@ -37,20 +36,24 @@ export default class AddPost extends React.Component {
     })
   }
 
-  handleSubmit = () => {
-    console.log(this.state.author);
+  handleSubmit = (e) => {
     console.log(this.state.title);
     console.log(this.state.body);
+    e.preventDefault()
+    axios.get('api/userName')
+      .then(res => {
+        axios.post('api/posts', {
+          author: res.data.userName,
+          title: this.state.title,
+          body: this.state.body
+        }).then((res) => {
+          console.log(res.data)
+          // this.props.history.push('/posts')
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
     
-    axios.post('api/posts', {
-      author: this.state.author,
-      title: this.state.title,
-      body: this.state.body
-    }).then((res) => {
-      console.log(res)
-    }).catch((err) => {
-      console.log(err)
-    })
   }
 
   render() {
@@ -63,17 +66,18 @@ export default class AddPost extends React.Component {
           </Toolbar>
         </Container>
       </AppBar>
-      <Container maxWidth="md">
+      <Container maxWidth="md" style={this.styles.container}>
       <Typography variant="h4" component="h2">
         Add Post
       </Typography>
-      <form noValidate onSubmit={ this.handleSubmit }>
+      <form noValidate onSubmit={e => this.handleSubmit(e) }>
         <TextField
-          label="Body"
-          placeholder="Body"
+          label="Title"
+          placeholder="Title"
           multiline={true}
           margin="normal"
           variant="outlined"
+          onChange={e => this.handleTitleChange(e) }
           style={{
             width: "100%",
             margin: '20px auto'
@@ -87,15 +91,16 @@ export default class AddPost extends React.Component {
           rowsMax={100}
           margin="normal"
           variant="outlined"
+          onChange={e => this.handleBodyChange(e) }
           style={{
             width: "100%",
             margin: '20px auto'
           }}
         />
-        <Button type="submit" variant="contained" color="primary" href="/posts">
+        <Button type="submit" variant="contained" color="primary">
           Add Post
         </Button>
-        <Button href="/">
+        <Button href="/posts">
           Back
         </Button>
       </form>
