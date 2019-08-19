@@ -31,7 +31,6 @@ export default class LoginForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log("fuck")
     axios.post('/login', {
       userName: this.state.userName,
       password: this.state.password
