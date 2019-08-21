@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
-import PostList from './components/PostList.js'
-import AddPost from './components/AddPost.js'
+import PostList from './components/pages/PostList.js'
+import AddPost from './components/pages/AddPost.js'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import axios from 'axios'
-import Authentication from './components/Authentication';
+import Authentication from './components/pages/Authentication';
 
 
 

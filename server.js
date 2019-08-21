@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 
 const posts = require('./routes/api/posts')
-const User = require('./models/User')
+const User = require('./models/user')
 
 const app = express()
 
@@ -46,6 +46,12 @@ app.post('/login', (req, res) => {
         })
       }
     })
+})
+
+app.post('/logout', (req, res) => {
+  req.session.userName = null
+  console.log("oyoooo")
+  res.json({success: true})
 })
 
 app.get('/api/userName', (req, res) => {

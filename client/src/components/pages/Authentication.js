@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import RegisterPage from './RegisterForm';
+import RegisterPage from '../RegisterForm';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import FormControl from '@material-ui/core/FormControl'
@@ -12,7 +12,7 @@ import Grid from '@material-ui/core/Grid'
 import Link from '@material-ui/core/Link'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
-import LoginPage from './LoginForm';
+import LoginPage from '../LoginForm';
 
 export default class Authentication extends Component {
   styles = {
