@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import { log } from 'util';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import FormControl from '@material-ui/core/FormControl'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-
+import { makeStyles } from '@material-ui/core/styles'
 
 const LoginForm = (props) => {
+  const classes = props.classes
+
   const [state, setState] = useState({
     userName: '',
     password: '',
@@ -53,10 +51,6 @@ const LoginForm = (props) => {
       console.log(err)
     })
   }
-  
-  useEffect(() => {
-    console.log(state)
-  })
 
   return (
     <form noValidate onSubmit={e => handleSubmit(e) }>
@@ -71,6 +65,7 @@ const LoginForm = (props) => {
         variant="outlined"
         helperText={ state.errorText.userName }
         error= { state.errorText.userName.length > 0 }
+        className={ classes.inputField }
       />
       <TextField
         fullWidth
@@ -84,11 +79,13 @@ const LoginForm = (props) => {
           variant="outlined"
         helperText={ state.errorText.password }
         error= { state.errorText.password.length > 0 }
+        className={ classes.inputField }
       />
-      <Button  fullWidth 
+      <Button fullWidth 
               variant="contained"  
               color="primary" 
-              type="submit">Log in</Button>
+              type="submit"
+              className={ classes.inputButton }>Log in</Button>
     </form>
   )
 }
