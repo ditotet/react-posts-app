@@ -38,29 +38,38 @@ const RegisterForm = (props) => {
     })
   }
 
+  const formIsValid = () => {
+    return state.errorText.password === '' && 
+            state.errorText.confirmPassword === ''
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post('/register', {
-      userName: state.userName,
-      password: state.password
-    }).then(res => {
-      if(res.data.success) {
-        axios.post('/login', {
-          userName: state.userName,
-          password: state.password
-        }).then(res => {
-          if (res.data.success) {
-            props.history.push('/posts')
-          } else {
-            console.log('unknown error')
-          }
-        })
-      } else {
-        console.log(res.data.error)
-      }
-    }).catch(err => {
-      console.log(err)
-    })
+    validatePassword()
+    validateConfirmPassword()
+    if(formIsValid()) {
+      axios.post('/register', {
+        userName: state.userName,
+        password: state.password
+      }).then(res => {
+        if(res.data.success) {
+          axios.post('/login', {
+            userName: state.userName,
+            password: state.password
+          }).then(res => {
+            if (res.data.success) {
+              props.history.push('/posts')
+            } else {
+              console.log('unknown error')
+            }
+          })
+        } else {
+          state.errorText.userName = res.data.error
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   }
 
   const validatePassword = () => {

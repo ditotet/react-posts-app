@@ -59,7 +59,7 @@ const PostList = (props) => {
 
   return (
     <>
-      <NavBar userName={ userName } {...props}/>  
+      <NavBar userName={ userName } postList={ posts.list } {...props}/>  
       <Container maxWidth="lg">
         <Box p={5}>
           <Typography variant="h4" component="h2">
