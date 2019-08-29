@@ -71,10 +71,9 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const SearchBar = (posts) => {
+const SearchBar = (props) => {
   const classes = useStyles()
-  if (posts) {
-    return (
+  return (
     <div className={classes.search}>
       <div className={classes.searchIcon}>
         <SearchIcon />
@@ -86,15 +85,16 @@ const SearchBar = (posts) => {
           input: classes.inputInput,
         }}
         inputProps={{ 'aria-label': 'search' }}
+        onChange={ (e) => props.onChange(e.target.value) }
       />
     </div>
-    )
-  }
+  )
 }
 
 
 const NavBar = (props) => {
   const classes = useStyles()
+  console.log(props.postList)
   return (
     <AppBar position="static">
       <Container maxWidth="lg">
@@ -105,7 +105,7 @@ const NavBar = (props) => {
             PostsApp
           </Typography>
         </Button>
-        <SearchBar posts={ props.postList } />
+        { props.postList ? <SearchBar onChange={ props.onChange } /> : null }
         <Typography variant="h6" className={classes.title}>
           { props.userName }
         </Typography>

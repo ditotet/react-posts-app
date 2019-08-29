@@ -29,7 +29,8 @@ const PostList = (props) => {
   const [userName, setUserName] = useState('')
   const [posts, setPosts] = useState({
     loaded: false,
-    list: []
+    list: [],
+    filteredList: []
   })
 
   const handleDelete = (id) => {
@@ -38,13 +39,13 @@ const PostList = (props) => {
 
   useEffect(() => {
     axios.get("/api/posts")
-      .then(res => setPosts({ loaded: true, list: res.data }))
+      .then(res => setPosts({ loaded: true, list: res.data, filteredList: res.data }))
     axios.get("/api/userName")
       .then(res => setUserName(res.data.userName))
   }, [])
 
   const postList = (
-    posts.list.map(post => ( 
+    posts.filteredList.map(post => ( 
       <PostItem 
         title={ post.title }
         author = { post.author } 
@@ -57,9 +58,16 @@ const PostList = (props) => {
     <CircularProgress />
   )
 
+  const handleSearchBarChange = (prefix) => {
+    setPosts({
+      ...posts,
+      filteredList: posts.list.filter((post) => post.title.startsWith(prefix))
+    })
+  }
+
   return (
     <>
-      <NavBar userName={ userName } postList={ posts.list } {...props}/>  
+      <NavBar userName={ userName } postList={posts.list} onChange={ handleSearchBarChange } {...props}/>  
       <Container maxWidth="lg">
         <Box p={5}>
           <Typography variant="h4" component="h2">
